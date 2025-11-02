@@ -26,6 +26,7 @@
 
 <style scoped>
   .header {
+    height: 44px;
     padding: 16px 32px; 
     display: flex; 
     align-items: center; 
@@ -43,6 +44,7 @@
   .header_logo img { 
     width: 54px; 
     height: 64px;  
+    margin-top: 7px;
   }
 
   .nav {

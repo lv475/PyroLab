@@ -90,12 +90,15 @@ button:focus-visible {
 }
 
 body {
-  margin: 0 140px;
+  margin: 0 140px 0 140px;
   padding: 0;
   background-color: black;
   color: white;
   font-family: "Zen_Kaku_Gothic_New";
+  height: 2000px;
 }
+
+
 /* 
 main-content {
   max-width: 1440px;
