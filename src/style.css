@@ -99,15 +99,11 @@ body {
   background-color: black;
   color: white;
   font-family: "Zen_Kaku_Gothic_New";
-  height: 2000px;
-  width: 1440px; /* Фиксируем минимальную ширину */
-
-}
-
-html {
+  height: 3000px;
   overflow-x: hidden;
-  width: 100%;
 }
+
+
 
 /* 
 main-content {
