@@ -43,8 +43,26 @@
     <div class="footer_column">
       <div class="icon_container">
         <p>Pyrokinesis в соц сетях</p>
-        <div class="social_links">
-          <img src="" alt="">
+        <div class="social_links_column">
+          <a href="" class="social_links">
+            <img src="./assets/icons/inst.svg" alt="">
+          </a>
+          <a href="" class="social_links">
+          <img src="./assets/icons/tt.svg" alt="">
+          </a>
+          <a href="" class="social_links">
+            <img src="./assets/icons/tg.svg" alt="">
+          </a>
+          <a href="" class="social_links">
+            <img src="./assets/icons/wk.svg" alt="">
+          </a>
+          <a href="" class="social_links">
+            <img src="./assets/icons/spotify.svg" alt="">
+          </a>
+          <a href="" class="social_links">
+            <img src="./assets/icons/yt.svg" alt="">
+          </a>
+          
         </div>
       </div>
     </div>
@@ -81,27 +99,7 @@ export default {
 }
 </script>
 
-<!-- <style>
-/* Без scoped! */
-html {
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
 
-body {
- 
-  overflow-x: hidden;
-}
-
-[id]:focus {
-  outline: none;
-}
-
-#biography:focus {
-  outline: none;
-  box-shadow: none;
-}
-</style> -->
 
 <style>
 html, body {
@@ -167,6 +165,7 @@ html, body {
   padding: 20px;
   z-index: 1000;
   margin-top: auto;
+  font-size: 20px;
 }
 
 .logo_container {
@@ -189,8 +188,34 @@ html, body {
   transition: color 0.3s;
 }
 
+.social_links_column {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  max-width: 200px; 
+  justify-items: center;
+  margin-top: 10px;
+}
 
+.social_links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.social_links img {
+  width: 24px;
+  height: 24px;
+  
+}
+
+.social_links_column a:nth-last-child(2) {
+  grid-column: 2 / 3; /* Занимают колонки 2 и 3 */
+  justify-self: center; /* Центрируем внутри этой области */
+}
+
+.text_container p {
+  margin-bottom: 10px;
+}
 
 </style>
 

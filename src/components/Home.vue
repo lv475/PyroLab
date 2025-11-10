@@ -45,7 +45,7 @@
       <div class="accordion_item" v-for="(item, index) in bioItems" :key="index">
         <div class="accordio_string">
           <div class="accordio_header" @click="toggleItem(index)" style="display: flex; gap: 10px; align-items: center;">
-            <h3 style="margin-bottom: 15px; font-size: 32px;">{{ item.title }}</h3>
+            <h3 style="margin-bottom: 15px; font-size: 32px; font-style: italic;">{{ item.title }}</h3>
             <div class="arrow_icon" :class="{ 'arrow_up': item.isOpen, 'arrow_down': !item.isOpen }" ></div>
           </div>
         </div>
@@ -182,6 +182,7 @@ export default {
 .biography_section h2 {
   margin-bottom: 15px;
   font-size: 32px;
+  font-style: italic;
 }
 
 .biography_section p {
