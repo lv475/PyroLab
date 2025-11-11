@@ -120,8 +120,6 @@ export default {
     
     goToAlbum(albumId) {
       // Переход на страницу альбома
-      console.log('🎵 Клик на альбом с ID:', albumId)
-      console.log('🔄 Пытаюсь перейти на:', `/album/${albumId}`)
       this.$router.push(`/album/${albumId}`)
     }
   }

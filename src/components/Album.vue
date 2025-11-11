@@ -103,7 +103,6 @@ export default {
     async loadAlbum(albumId) {
     try {
       this.loading = true
-      console.log('🔄 Загружаем альбом ID:', albumId)
       
       // 1. Загружаем данные альбома
       const { data: album, error: albumError } = await supabase
@@ -113,7 +112,6 @@ export default {
         .single()
       
       if (albumError) throw albumError
-      console.log('✅ Альбом загружен:', album)
       
       // 2. Загружаем песни этого альбома (БЕЗ КОММЕНТАРИЕВ!)
       const { data: songs, error: songsError } = await supabase
@@ -133,7 +131,6 @@ export default {
         .order('track_number')
       
       if (songsError) throw songsError
-      console.log('🎵 Песни загружены:', songs)
       
       // Сохраняем данные
       this.album = album
@@ -142,17 +139,12 @@ export default {
         lyrics: song.lyrics?.sort((a, b) => a.line_order - b.line_order) || []
       }))
       
-      // Выбираем первую песню
-      if (this.songs.length > 0) {
-        this.currentSong = this.songs[0]
-        console.log('🎶 Текущая песня:', this.currentSong)
-      }
+      
       
     } catch (error) {
-      console.error('❌ Ошибка загрузки альбома:', error)
+      console.error('Ошибка загрузки альбома:', error)
     } finally {
       this.loading = false
-      console.log('🏁 Загрузка завершена')
     }
   }
     ,
