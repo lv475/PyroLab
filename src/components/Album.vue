@@ -154,14 +154,14 @@ export default {
       this.progress = 0
       
       // Пытаемся автоматически запустить воспроизведение
-      this.$nextTick(() => {
-        const audio = this.$refs.audioPlayer
-        if (audio) {
-          audio.play().catch(e => {
-            console.log('Автовоспроизведение заблокировано')
-          })
-        }
-      })
+      // this.$nextTick(() => {
+      //   const audio = this.$refs.audioPlayer
+      //   if (audio) {
+      //     audio.play().catch(e => {
+      //       console.log('Автовоспроизведение заблокировано')
+      //     })
+      //   }
+      // })
     },
     
     // Обновление прогресса воспроизведения

@@ -81,22 +81,58 @@
 <script>
 export default {
   methods: {
-    goToBiography() {
+    async goToBiography() {
       if (this.$route.path === '/') {
+        // Мы уже на главной - просто скроллим
+        this.$nextTick(() => {
+          this.scrollToBiography()
+        })
+      } else {
+        // Переходим на главную без хэша
+        await this.$router.push('/')
+        // После перехода скроллим к элементу
+        this.$nextTick(() => {
+          this.scrollToBiography()
+        })
+      }
+    },
+    
+    scrollToBiography() {
+      setTimeout(() => {
         const element = document.getElementById('biography')
         if (element) {
-          element.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start',
-            inline: 'nearest'
+          const offset = 40
+          const targetPosition = element.offsetTop - offset
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
           })
         }
-      } else {
-        this.$router.push({ path: '/', hash: '#biography' })
-      }
+      }, 150)
     }
   }
 }
+    // goToBiography() {
+    //   if (this.$route.path === '/') {
+    //     const element = document.getElementById('biography')
+    //     if (element) {
+    //       // element.scrollIntoView({ 
+    //       //   behavior: 'smooth',
+    //       //   block: 'start',
+    //       //   inline: 'nearest'
+    //       // })
+    //       window.scrollTo({
+    //             top: element.offsetTop,
+    //             behavior: 'smooth'
+    //         })
+    //     }
+    //   } else {
+    //     this.$router.push({ path: '/', hash: '#biography' })
+    //   }
+    // }
+  
+
 </script>
 
 
