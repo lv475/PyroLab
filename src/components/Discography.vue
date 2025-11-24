@@ -75,11 +75,12 @@ export default {
         <div class="album-info">
           <h3>{{ album.title }}</h3>
           
+          
           <!-- Описание альбома прямо в коде -->
-          <div class="description">
+          <!-- <div class="description">
             <p>Студийный альбом • 2023 год</p>
             <p>8 треков • 35 минут</p>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -103,18 +104,28 @@ export default {
   methods: {
     async loadAlbums() {
       try {
+        console.log('🔄 Начинаем загрузку альбомов...')
+    
         const { data: albums, error } = await supabase
           .from('albums')
           .select('*')
           .order('created_at', { ascending: false })
         
-        if (error) throw error
+        console.log('📊 Ответ от Supabase:', { data: albums, error })
+        
+        if (error) {
+          console.error('❌ Ошибка Supabase:', error)
+          throw error
+        }
+
+        console.log('✅ Альбомы загружены:', albums)
         
         this.albums = albums
       } catch (error) {
         console.error('Ошибка загрузки альбомов:', error)
       } finally {
         this.loading = false
+        console.log('🏁 Загрузка завершена, loading:', this.loading, 'Альбомов:', this.albums.length)
       }
     },
     
@@ -129,7 +140,7 @@ export default {
 <style scoped>
 .discography-page {
   padding: 40px;
-  max-width: 1200px;
+  max-width: 1016px;
   margin: 0 auto;
 }
 
@@ -142,49 +153,50 @@ export default {
 
 .albums-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat( 4, 1fr);
+  gap: 75px;
 }
 
 .album-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
+  align-items: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 254px;
+  
+
 }
 
 .album-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 .album-cover {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
+  max-width: 200px;
+  height: 200px;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-.album-info {
-  padding: 20px;
-}
+/* .album-info {
+  padding: 10px;
+} */
 
 .album-info h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.3em;
-  color: #333;
+  font-size: 20px;
+  color: #ffffff;
+  text-align: center;
 }
 
-.description {
+/* .description {
   color: #666;
-}
+} */
 
-.description p {
+/* .description p {
   margin: 5px 0;
   font-size: 0.9em;
   line-height: 1.4;
-}
+} */
 
 .loading {
   text-align: center;

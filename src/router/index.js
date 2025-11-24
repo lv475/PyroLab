@@ -51,6 +51,7 @@ import Album from '../components/Album.vue'
 import Photo from '../components/Photo.vue'
 import Video from '../components/Video.vue'
 import Merch from '../components/Merch.vue'
+// import AudioPlayer from '../components/AudioPlayer.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -61,7 +62,8 @@ const routes = [
   { path: '/album/:id', name: 'Album', component: Album },
   { path: '/photo', name: 'Photo', component: Photo },
   { path: '/video', name: 'Video', component: Video },
-  { path: '/merch', name: 'Merch', component: Merch }
+  { path: '/merch', name: 'Merch', component: Merch } //тут была запятая, но пока без нее
+  // { path: '/audio-player', name: 'AudioPlayer', component: AudioPlayer }
 ]
 
 const router = createRouter({
