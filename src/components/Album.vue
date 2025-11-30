@@ -1,6 +1,13 @@
 <template>
   <div class="album-page" :style="albumStyles">
     <!-- ДОБАВЬ ЭТОТ ЭЛЕМЕНТ - ФОН НА ВЕСЬ ЭКРАН -->
+
+    <!-- <div style="position: fixed; top: 50px; left: 10px; background: blue; color: white; padding: 10px; z-index: 10000;">
+      Альбом: {{ 
+        currentSong ? currentSong.title : 'песня не выбрана',
+        audioStore.isVisible ? 'store ВИДИМ' : 'store СКРЫТ'
+      }}
+    </div> -->
     <div 
       class="full_background" 
       :style="{ 
@@ -38,6 +45,12 @@
 
     <!-- Основная область контента (УБЕРИ backgroundImage отсюда) -->
     <div class="content_area">
+
+      <!-- <div class="test-buttons">
+  <button @click="testStore" style="background: red; color: white; padding: 10px;">
+    ТЕСТ: Обновить Store
+  </button>
+</div> -->
       <!-- Если песня выбрана - показываем текст -->
       <div v-if="currentSong" class="lyrics_container">
         <h3>{{ currentSong.title }}</h3>
@@ -76,6 +89,10 @@
       <AudioPlayer 
         v-if="currentSong" 
         :src="currentSong.audio_url" 
+        :current-song-title="currentSong.title"
+        :song-list="songs"
+        :current-song-index="currentSongIndex"
+        @change-track="onTrackChange"
         class="audio-player"
       />
     </div>
@@ -85,14 +102,23 @@
 <script>
 import { supabase } from '../lib/supabase'
 import AudioPlayer from './AudioPlayer.vue'
+import { useAudioPlayerStore } from '../stores/audioPlayer'
 
 export default {
   name: 'AlbumPage',
   components: {  // ← Этот блок ДОЛЖЕН быть
     AudioPlayer
   },
+  setup() {
+    const audioStore = useAudioPlayerStore()
+    
+    return {
+      audioStore
+    }
+  },
   data() {
     return {
+      currentSongIndex: 0,
       album: {},          // Данные альбома
       songs: [],          // Песни этого альбома
       currentSong: null,  // Текущая выбранная песня
@@ -155,6 +181,40 @@ export default {
     await this.loadAlbum(albumId)
   },
   methods: {
+
+    onTrackChange(newIndex) {
+      this.currentSongIndex = newIndex
+      this.selectSong(this.songs[newIndex])
+    },
+
+    
+  
+  
+    selectSong(song) {
+     
+
+      // console.log('🎵 1. selectSong начал работу:', song.title)
+  
+      this.currentSong = song
+      this.currentSongIndex = this.songs.findIndex(s => s.id === song.id)
+      // console.log('🎵 2. Локальные данные обновлены')
+  
+  // Проверяем store ДО вызова
+  // console.log('🎵 3. Store до вызова:', 
+  ,{
+    isVisible: this.audioStore.isVisible,
+    currentTrack: this.audioStore.currentTrack
+  }
+  
+  // Вызываем store
+  this.audioStore.setCurrentTrack(song, this.songs, this.currentSongIndex)
+  // console.log('🎵 4. Store после вызова:'
+  , {
+    isVisible: this.audioStore.isVisible,
+    currentTrack: this.audioStore.currentTrack
+  }
+    },
+
     hexToRgb(hex) {
       if (!hex) return { r: 129, g: 129, b: 129 }
       
@@ -219,22 +279,14 @@ export default {
       } finally {
         this.loading = false
       }
+
+      
     },
     
-    // Выбор песни
-    selectSong(song) {
-      this.currentSong = song
-      // this.progress = 0
-    },
     
-    // Обновление прогресса воспроизведения
-    // updateProgress() {
-    //   const audio = this.$refs.audioPlayer
-    //   if (audio && audio.duration) {
-    //     this.progress = (audio.currentTime / audio.duration) * 100
-    //   }
-    // }
   }
+
+  
 }
 </script>
 

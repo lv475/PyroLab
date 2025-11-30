@@ -51,7 +51,7 @@ import Album from '../components/Album.vue'
 import Photo from '../components/Photo.vue'
 import Video from '../components/Video.vue'
 import Merch from '../components/Merch.vue'
-// import AudioPlayer from '../components/AudioPlayer.vue'
+import Product from '../components/Product.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -62,8 +62,8 @@ const routes = [
   { path: '/album/:id', name: 'Album', component: Album },
   { path: '/photo', name: 'Photo', component: Photo },
   { path: '/video', name: 'Video', component: Video },
-  { path: '/merch', name: 'Merch', component: Merch } //тут была запятая, но пока без нее
-  // { path: '/audio-player', name: 'AudioPlayer', component: AudioPlayer }
+  { path: '/merch', name: 'Merch', component: Merch },
+  { path: '/product/:id', name: 'Product', component: Product } 
 ]
 
 const router = createRouter({
@@ -80,14 +80,5 @@ const router = createRouter({
   }
 })
 
-// ОТЛАДКА
-// console.log('🔄 ПЕРЕСОЗДАНИЕ РОУТЕРА!')
-// router.getRoutes().forEach(route => {
-//   console.log(`🛣️ ${route.path} → ${route.name}`)
-// })
-
-// router.beforeEach((to, from) => {
-//   console.log('📍 Переход:', from.path, '→', to.path, 'Params:', to.params)
-// })
 
 export default router

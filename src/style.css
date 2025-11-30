@@ -87,6 +87,11 @@ button:focus-visible {
   src: url(./assets/fonts/Koulen/Koulen-Regular.ttf);
 }
 
+@font-face {
+  font-family: "Zen_Kaku_Gothic_New_Bold";
+  src: url(./assets/fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-Bold.ttf);
+}
+
 * {
   margin: 0;
   padding: 0;

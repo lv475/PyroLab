@@ -1,65 +1,106 @@
 <template>
-  <div class="audio-player">
-    <!-- Прогресс-бар -->
-    <div class="progress-bar" @click="seek">
-      <div class="progress" :style="{ width: progress + '%' }"></div>
-    </div>
+  <div class="audio-player" :class="{ minimized: isMinimized }">
+    
+    <!-- Кнопка свернуть/развернуть -->
+    <button class="minimize-btn" @click="toggleMinimize">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path v-if="!isMinimized" d="M19 13H5v-2h14v2z"/>
+        <path v-else d="M7 14l5-5 5 5z"/>
+      </svg>
+    </button>
 
-    <!-- Основные контролы -->
-    <div class="player-controls">
-      <!-- Кнопка воспроизведения/паузы -->
-      <button class="control-btn play-pause" @click="togglePlay">
-        <!-- <svg v-if="!isPlaying" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-        <svg v-else width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-        </svg> -->
-        <img 
-            v-if="!isPlaying" 
-            src="@/assets/icons/play.png" 
-            alt="Play"
-            class="icon"
-        >
-        <img 
-            v-else 
-            src="@/assets/icons/pause.png" 
-            alt="Pause"
-            class="icon"
-        >
-      </button>
-
-      <!-- Текущее время и длительность -->
-      <div class="time-display">
-        <span class="current-time">{{ formatTime(currentTime) }}</span>
-        <span class="duration">{{ formatTime(duration) }}</span>
+    <div class="player-container">
+      <!-- Название песни -->
+      <div class="song-title" v-if="!isMinimized">
+        {{ currentSongTitle }}
       </div>
 
-      <!-- Правые кнопки -->
-      <div class="right-controls">
-        <!-- Сердечко -->
-        <button class="control-btn favorite" @mouseenter="showFavoriteTooltip = true" @mouseleave="showFavoriteTooltip = false">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
-          </svg>
-          <div v-if="showFavoriteTooltip" class="tooltip">Войдите в аккаунт, чтобы добавить в избранное</div>
-        </button>
+      <!-- Верхний ряд кнопок -->
+      <div class="top-controls" v-if="!isMinimized">
+        <!-- Левая сторона - избранное -->
+         <!-- @mouseenter="showFavoriteTooltip = true" @mouseleave="showFavoriteTooltip = false" -->
+          <div class="favorite-container">
+            <button class="control-btn favorite" 
+            @mouseenter="showFavoriteTooltip = true" 
+            @mouseleave="showFavoriteTooltip = false">
+            <img src="../assets/icons/favorite.svg" alt="Избранное" class="icon">
+             
+            <div v-if="showFavoriteTooltip" class="tooltip">Войдите в аккаунт, чтобы добавить в избранное</div>
+          </button>
+          </div>
+         
+      
 
-        <!-- Кнопка скачивания -->
-        <button class="control-btn download" @mouseenter="showDownloadTooltip = true" @mouseleave="showDownloadTooltip = false">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-          </svg>
-          <div v-if="showDownloadTooltip" class="tooltip">Войдите в аккаунт, чтобы загрузить трек</div>
-        </button>
+        <!-- Центр - кнопки управления -->
+        <div class="center-controls">
+          <button class="control-btn prev" @click="prevTrack" :disabled="!hasPrevious">
+            <img src="../assets/icons/last.svg" alt="Предыдущий" class="icon">
+          </button>
 
-        <!-- Кнопка поделиться -->
-        <button class="control-btn share" @mouseenter="showShareTooltip = true" @mouseleave="showShareTooltip = false" @click="shareTrack">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
-          </svg>
-          <div v-if="showShareTooltip" class="tooltip">Поделиться треком</div>
+          <button class="control-btn play-pause" @click="togglePlay">
+            <img 
+              v-if="!isPlaying" 
+              src="../assets/icons/play.svg" 
+              alt="Play"
+              class="icon"
+            >
+            <img 
+              v-else 
+              src="../assets/icons/pause.svg" 
+              alt="Pause"
+              class="icon"
+            >
+          </button>
+
+          <button class="control-btn next" @click="nextTrack" :disabled="!hasNext">
+            <img src="../assets/icons/next.svg" alt="Следующий" class="icon">
+          </button>
+        </div>
+
+        <!-- Правая сторона - скачать и поделиться -->
+        <div class="right-controls">
+          <button class="control-btn download" @mouseenter="showDownloadTooltip = true" @mouseleave="showDownloadTooltip = false">
+            <img src="../assets/icons/download.svg" alt="Скачать" class="icon">
+            <div v-if="showDownloadTooltip" class="tooltip">Войдите в аккаунт, чтобы загрузить трек</div>
+          </button>
+
+          <button class="control-btn share" @mouseenter="showShareTooltip = true" @mouseleave="showShareTooltip = false" @click="shareTrack">
+            <img src="../assets/icons/share.svg" alt="Поделиться" class="icon">
+            <div v-if="showShareTooltip" class="tooltip">Поделиться треком</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Прогресс-бар с временем -->
+      <div class="progress-section" v-if="!isMinimized">
+        <span class="time-start">{{ formatTime(currentTime) }}</span>
+        
+        <div class="progress-bar" @click="seek">
+          <div class="progress" :style="{ width: progress + '%' }">
+            <div class="progress-circle"></div>
+          </div>
+        </div>
+        
+        <span class="time-end">{{ formatTime(duration) }}</span>
+      </div>
+
+      <!-- Минимизированная версия -->
+      <div v-else class="minimized-player">
+        <button class="control-btn play-pause" @click="togglePlay">
+          <img 
+            v-if="!isPlaying" 
+            src="../assets/icons/play.svg" 
+            alt="Play"
+            class="icon"
+          >
+          <img 
+            v-else 
+            src="../assets/icons/pause.svg" 
+            alt="Pause"
+            class="icon"
+          >
         </button>
+        <span class="minimized-title">{{ currentSongTitle }}</span>
       </div>
     </div>
 
@@ -81,6 +122,19 @@ export default {
     src: {
       type: String,
       required: true
+    },
+
+    currentSongTitle: {  // ← НОВЫЙ ПРОПС
+      type: String,
+      default: 'Название трека'
+    },
+    songList: {   // ← НОВЫЙ ПРОПС
+      type: Array,
+      default: () => []
+    },
+    currentSongIndex: {  // ← НОВЫЙ ПРОПС
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -91,10 +145,23 @@ export default {
       progress: 0,
       showFavoriteTooltip: false,
       showDownloadTooltip: false,
-      showShareTooltip: false
+      showShareTooltip: false,
+      isMinimized: false,  // ← Добавляем состояние свернутости
+      
     }
   },
+
+  computed: {
+    hasPrevious() {
+      return this.currentSongIndex > 0
+    },
+    hasNext() {
+      return this.currentSongIndex < this.songList.length - 1
+    }
+  },
+
   methods: {
+    
     togglePlay() {
       const audio = this.$refs.audioElement
       if (this.isPlaying) {
@@ -103,6 +170,22 @@ export default {
         audio.play()
       }
       this.isPlaying = !this.isPlaying
+    },
+
+    toggleMinimize() {
+      this.isMinimized = !this.isMinimized
+    },
+
+    prevTrack() {
+    if (this.hasPrevious) {
+      this.$emit('change-track', this.currentSongIndex - 1)  // ← ИСПРАВЛЕНО
+      }
+    },
+
+    nextTrack() {
+    if (this.hasNext) {
+      this.$emit('change-track', this.currentSongIndex + 1)  // ← ИСПРАВЛЕНО
+      }
     },
 
     updateProgress() {
@@ -120,6 +203,7 @@ export default {
       this.isPlaying = false
       this.currentTime = 0
       this.progress = 0
+      this.nextTrack()
     },
 
     seek(event) {
@@ -158,20 +242,107 @@ export default {
 
 <style scoped>
 .audio-player {
+  position: fixed;  /* ← Фиксированное позиционирование */
+  bottom: 0;        /* ← Прижат к низу */
+  left: 0;          /* ← Начинается от левого края */
+  right: 0;         /* ← Растягивается на всю ширину */
   background: rgba(0, 0, 0, 0.9);
   padding: 15px 20px;
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000; 
 }
 
-.progress-bar {
-  width: 100%;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
+.player-container {
+  max-width: 960px; /* Уменьшили ширину контента в 2 раза */
+  margin: 0 auto;
+  padding: 15px 20px;
+  position: relative;
+  min-height: 80px;
+}
+
+/* Название песни */
+.song-title {
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  font-family: "Zen_Kaku_Gothic_New_Bold";
+  margin-bottom: 5px;
+  font-weight: 500;
+  margin-top: -30px; /* ← Фиксируем вверху */
+}
+
+/* Верхний ряд кнопок */
+.top-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 15px;
+}
+
+.left-controls {
+  display: flex;
+}
+
+/* .center-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+} */
+
+.right-controls {
+  display: flex;
+  gap: 10px;
+}
+
+
+/* Иконки боковых кнопок - увеличиваем */
+.control-btn.favorite .icon,
+.right-controls .icon {
+  width: 30px;    /* ← Увеличили */
+  height: 30px;   /* ← Увеличили */
+}
+
+.progress-section {
+  position: absolute;
+  bottom: 20px;
+  left: 40px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+}
+
+.time-start,
+.time-end {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-family: "Zen_Kaku_Gothic_New";
+  min-width: 40px;
+  position: absolute;
+  bottom: -30px;
+}
+
+.time-start {
+  text-align: left;
+  left: 0;
+}
+
+.time-end {
+  text-align: right;
+  right: 0;
+}
+
+
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
   cursor: pointer;
   position: relative;
+  margin: 0 10px;
 }
 
 .progress {
@@ -200,10 +371,43 @@ export default {
   opacity: 1;
 }
 
-.player-controls {
+.progress-circle {
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.favorite-container {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  padding: 20px; /* Увеличиваем область наведения */
+  z-index: 10002;
+}
+
+.control-btn.favorite {
+  position: relative;
+  /* убрать absolute positioning */
+}
+
+
+.center-controls {
   display: flex;
+  justify-content: center; /* ← ВОТ ЭТО ЦЕНТРИРУЕТ */
   align-items: center;
-  justify-content: space-between;
+  gap: 25px;
+  width: 100%; /* ← ЗАНИМАЕТ ВСЮ ШИРИНУ */
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
 }
 
 .control-btn {
@@ -225,17 +429,23 @@ export default {
   transform: scale(1.1);
 }
 
+
+
 .play-pause {
   width: 40px;
   height: 40px;
-  background: white;
   color: black;
 }
 
 .play-pause:hover {
-  background: #f0f0f0;
   transform: scale(1.05);
 }
+
+.prev, .next {
+  width: 40px;
+  height: 40px;
+}
+
 
 .time-display {
   display: flex;
@@ -243,13 +453,16 @@ export default {
   gap: 8px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
-  font-family: monospace;
+  font-family: "Zen_Kaku_Gothic_New";
 }
 
 .right-controls {
+  position: absolute;
+  right: 40px;
+  top: 44%;
+  transform: translateY(-50%);
   display: flex;
-  align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .tooltip {
@@ -265,7 +478,8 @@ export default {
   white-space: nowrap;
   margin-bottom: 8px;
   backdrop-filter: blur(10px);
-  z-index: 1000;
+  z-index: 10001;
+  pointer-events: none;
 }
 
 .tooltip::after {
@@ -276,5 +490,46 @@ export default {
   transform: translateX(-50%);
   border: 6px solid transparent;
   border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+.audio-player {
+  overflow: visible; /* ← важно! */
+}
+
+.player-container {
+  overflow: visible; /* ← важно! */
+}
+
+.minimize-btn {
+  position: absolute;
+  top: 8px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+}
+
+.minimized-player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+ justify-content: center; /* ← Центрируем элементы */
+  height: 100%; /* ← Занимаем всю высоту */
+  margin-top: -9px/* ← Поднимаем выше */
+}
+
+.minimized-title {
+  color: white;
+  font-size: 16px;
+}
+
+/* Свернутый плеер занимает меньше места */
+.audio-player.minimized {
+  padding: 5px 20px;
+  height: 50px;
 }
 </style>

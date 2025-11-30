@@ -17,8 +17,26 @@
        </RouterLink>
     </nav>
   </header>
+
+  <!-- <div style="position: fixed; top: 10px; left: 10px; background: red; color: white; padding: 10px; z-index: 10000;">
+      Store: {{ 
+        audioStore.isVisible ? 'ВИДИМ' : 'СКРЫТ',
+        audioStore.currentTrack ? audioStore.currentTrack.title : 'нет трека'
+      }}
+    </div> -->
+
   <!-- активная страница -->
   <RouterView />  
+
+  <AudioPlayer
+      v-if="audioStore.isVisible"
+      :src="audioStore.currentTrack?.audio_url"
+      :currentSongTitle="audioStore.currentTrack?.title"
+      :songList="audioStore.playlist"
+      :currentSongIndex="audioStore.currentTrackIndex"
+      @change-track="changeTrack"
+  />
+
 
   <footer class="footer">
     <div class="footer_column">
@@ -79,8 +97,29 @@
 </template>
 
 <script>
+import { useAudioPlayerStore } from './stores/audioPlayer'
+import AudioPlayer from './components/AudioPlayer.vue'
+
 export default {
+  name: 'App',
+  components: { AudioPlayer },
+  setup() {
+    const audioStore = useAudioPlayerStore()
+    
+    const changeTrack = (index) => {
+      audioStore.changeTrack(index)
+    }
+
+    return {
+      audioStore,
+      changeTrack
+    }
+  },
   methods: {
+    // changeTrack(index) {
+    //   this.$audioPlayer.currentTrackIndex = index
+    //   this.$audioPlayer.currentTrack = this.$audioPlayer.playlist[index]
+    // },
     async goToBiography() {
       if (this.$route.path === '/') {
         // Мы уже на главной - просто скроллим
