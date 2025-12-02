@@ -91,7 +91,7 @@ export default {
   margin-bottom: 10px;
 }
 
-.description { /* ИСПРАВЛЕНО: .full-description → .description */
+.description { 
   line-height: 1.6;
   color: #666;
   white-space: pre-line;
@@ -106,8 +106,9 @@ export default {
 .back-button {
   background: none;
   border: none;
+  font-family: "Zen_Kaku_Gothic_New";
   color: #646464;
-  font-size: 1rem;
+  font-size: 18px;
   cursor: pointer;
   margin-bottom: 20px;
   padding: 10px 0;

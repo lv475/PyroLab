@@ -6,7 +6,10 @@
       </div>
       <div class="main_content">
         <h1>Pyrokinesis</h1>
-        <p>Люди говорят —  мол, тексты не <br>горят, но я сжигал в них всё и <br>птицей отпускал</p>
+        <div class="quote">
+          <p>Люди говорят —  мол, тексты не <br>горят, но я сжигал в них всё и <br>птицей отпускал</p>
+          <img src=".." alt="">
+        </div>
       </div>
     </div>
   </main>
@@ -21,7 +24,7 @@
     </div>
 
     <div class="card" >
-      <router-link to="/video">
+      <router-link to="/videos">
         <img src="../assets/images/Group_video.png" alt="видео">
         <p>Видео</p>
       </router-link>

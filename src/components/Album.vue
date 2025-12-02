@@ -141,6 +141,22 @@ export default {
           secondaryColor: '#2D2927',
           textColor: 'white'
         },
+
+        {
+          id: 3,
+          name: 'Терновый венец эволюции',
+          primaryColor: '#000000',
+          secondaryColor: '#FFFFFF',
+          textColor: 'white'
+        },
+
+        {
+          id: 4,
+          name: 'mea maxima culpa',
+          primaryColor: '#C0B6AC',
+          secondaryColor: '#2E0809',
+          textColor: 'white'
+        },
         
         // Добавь другие альбомы по мере необходимости
       ]

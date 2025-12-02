@@ -37,6 +37,8 @@
       @change-track="changeTrack"
   />
 
+  <MiniPlayer />
+
 
   <footer class="footer">
     <div class="footer_column">
@@ -99,10 +101,14 @@
 <script>
 import { useAudioPlayerStore } from './stores/audioPlayer'
 import AudioPlayer from './components/AudioPlayer.vue'
+import MiniPlayer from './components/MiniPlayer.vue'
 
 export default {
   name: 'App',
-  components: { AudioPlayer },
+  components: { 
+    AudioPlayer,
+    MiniPlayer  
+  },
   setup() {
     const audioStore = useAudioPlayerStore()
     

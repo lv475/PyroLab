@@ -52,6 +52,7 @@ import Photo from '../components/Photo.vue'
 import Video from '../components/Video.vue'
 import Merch from '../components/Merch.vue'
 import Product from '../components/Product.vue'
+import VideoDetail from '../components/VideoDetail.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -61,9 +62,10 @@ const routes = [
   { path: '/profile', name: 'Profile', component: Profile },
   { path: '/album/:id', name: 'Album', component: Album },
   { path: '/photo', name: 'Photo', component: Photo },
-  { path: '/video', name: 'Video', component: Video },
+  { path: '/videos', name: 'Videos', component: Video },
   { path: '/merch', name: 'Merch', component: Merch },
-  { path: '/product/:id', name: 'Product', component: Product } 
+  { path: '/product/:id', name: 'Product', component: Product },
+  { path: '/video/:id', name: 'VideoDetail', component: VideoDetail }
 ]
 
 const router = createRouter({

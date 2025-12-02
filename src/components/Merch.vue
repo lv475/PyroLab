@@ -88,10 +88,10 @@ export default {
 }
 
 .merch-page h2 {
-  font-size: 30px;
   text-align: center;
-  color: #9c9c9c;
-  margin-bottom: 15px;
+  margin-bottom: 40px;
+  color: #333;
+  font-size: 40px;
   font-family: "Zen_Kaku_Gothic_New";
 }
 
