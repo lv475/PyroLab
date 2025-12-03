@@ -1,7 +1,6 @@
 <template>
   <div class="audio-player" :class="{ minimized: isMinimized }">
-    
-    <!-- Кнопка свернуть/развернуть -->
+
     <button class="minimize-btn" @click="toggleMinimize">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
         <path v-if="!isMinimized" d="M19 13H5v-2h14v2z"/>
@@ -10,14 +9,11 @@
     </button>
 
     <div class="player-container">
-      <!-- Название песни -->
       <div class="song-title" v-if="!isMinimized">
         {{ currentSongTitle }}
       </div>
 
-      <!-- Верхний ряд кнопок -->
       <div class="top-controls" v-if="!isMinimized">
-        <!-- Левая сторона - избранное -->
          <!-- @mouseenter="showFavoriteTooltip = true" @mouseleave="showFavoriteTooltip = false" -->
           <div class="favorite-container">
             <button class="control-btn favorite" 
@@ -29,9 +25,6 @@
           </button>
           </div>
          
-      
-
-        <!-- Центр - кнопки управления -->
         <div class="center-controls">
           <button class="control-btn prev" @click="prevTrack" :disabled="!hasPrevious">
             <img src="../assets/icons/last.svg" alt="Предыдущий" class="icon">
@@ -57,7 +50,6 @@
           </button>
         </div>
 
-        <!-- Правая сторона - скачать и поделиться -->
         <div class="right-controls">
           <button class="control-btn download" @mouseenter="showDownloadTooltip = true" @mouseleave="showDownloadTooltip = false">
             <img src="../assets/icons/download.svg" alt="Скачать" class="icon">
@@ -71,7 +63,6 @@
         </div>
       </div>
 
-      <!-- Прогресс-бар с временем -->
       <div class="progress-section" v-if="!isMinimized">
         <span class="time-start">{{ formatTime(currentTime) }}</span>
         
@@ -84,7 +75,6 @@
         <span class="time-end">{{ formatTime(duration) }}</span>
       </div>
 
-      <!-- Минимизированная версия -->
       <div v-else class="minimized-player">
         <button class="control-btn play-pause" @click="togglePlay">
           <img 
@@ -104,7 +94,6 @@
       </div>
     </div>
 
-    <!-- Скрытый audio элемент -->
     <audio 
       ref="audioElement"
       :src="src"
@@ -124,15 +113,15 @@ export default {
       required: true
     },
 
-    currentSongTitle: {  // ← НОВЫЙ ПРОПС
+    currentSongTitle: {  
       type: String,
       default: 'Название трека'
     },
-    songList: {   // ← НОВЫЙ ПРОПС
+    songList: {  
       type: Array,
       default: () => []
     },
-    currentSongIndex: {  // ← НОВЫЙ ПРОПС
+    currentSongIndex: {  
       type: Number,
       default: 0
     }
@@ -146,7 +135,7 @@ export default {
       showFavoriteTooltip: false,
       showDownloadTooltip: false,
       showShareTooltip: false,
-      isMinimized: false,  // ← Добавляем состояние свернутости
+      isMinimized: false,
       
     }
   },
@@ -178,13 +167,13 @@ export default {
 
     prevTrack() {
     if (this.hasPrevious) {
-      this.$emit('change-track', this.currentSongIndex - 1)  // ← ИСПРАВЛЕНО
+      this.$emit('change-track', this.currentSongIndex - 1)  
       }
     },
 
     nextTrack() {
     if (this.hasNext) {
-      this.$emit('change-track', this.currentSongIndex + 1)  // ← ИСПРАВЛЕНО
+      this.$emit('change-track', this.currentSongIndex + 1)  
       }
     },
 
@@ -231,7 +220,6 @@ export default {
           url: window.location.href
         })
       } else {
-        // Fallback для браузеров без поддержки Web Share API
         navigator.clipboard.writeText(window.location.href)
         alert('Ссылка скопирована в буфер обмена!')
       }
@@ -242,10 +230,10 @@ export default {
 
 <style scoped>
 .audio-player {
-  position: fixed;  /* ← Фиксированное позиционирование */
-  bottom: 0;        /* ← Прижат к низу */
-  left: 0;          /* ← Начинается от левого края */
-  right: 0;         /* ← Растягивается на всю ширину */
+  position: fixed;  
+  bottom: 0;        
+  left: 0;          
+  right: 0;      
   background: rgba(0, 0, 0, 0.9);
   padding: 15px 20px;
   backdrop-filter: blur(10px);
@@ -254,14 +242,13 @@ export default {
 }
 
 .player-container {
-  max-width: 960px; /* Уменьшили ширину контента в 2 раза */
+  max-width: 960px; 
   margin: 0 auto;
   padding: 15px 20px;
   position: relative;
   min-height: 80px;
 }
 
-/* Название песни */
 .song-title {
   text-align: center;
   color: white;
@@ -269,10 +256,9 @@ export default {
   font-family: "Zen_Kaku_Gothic_New_Bold";
   margin-bottom: 5px;
   font-weight: 500;
-  margin-top: -30px; /* ← Фиксируем вверху */
+  margin-top: -30px; 
 }
 
-/* Верхний ряд кнопок */
 .top-controls {
   display: flex;
   align-items: center;
@@ -284,23 +270,15 @@ export default {
   display: flex;
 }
 
-/* .center-controls {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-} */
-
 .right-controls {
   display: flex;
   gap: 10px;
 }
 
-
-/* Иконки боковых кнопок - увеличиваем */
 .control-btn.favorite .icon,
 .right-controls .icon {
-  width: 30px;    /* ← Увеличили */
-  height: 30px;   /* ← Увеличили */
+  width: 30px;    
+  height: 30px;   
 }
 
 .progress-section {
@@ -387,22 +365,21 @@ export default {
   position: absolute;
   top: 40%;
   transform: translateY(-50%);
-  padding: 20px; /* Увеличиваем область наведения */
+  padding: 20px; 
   z-index: 10002;
 }
 
 .control-btn.favorite {
   position: relative;
-  /* убрать absolute positioning */
 }
 
 
 .center-controls {
   display: flex;
-  justify-content: center; /* ← ВОТ ЭТО ЦЕНТРИРУЕТ */
+  justify-content: center; 
   align-items: center;
   gap: 25px;
-  width: 100%; /* ← ЗАНИМАЕТ ВСЮ ШИРИНУ */
+  width: 100%; 
   position: absolute;
   top: 20%;
   left: 0;
@@ -493,11 +470,11 @@ export default {
 }
 
 .audio-player {
-  overflow: visible; /* ← важно! */
+  overflow: visible; 
 }
 
 .player-container {
-  overflow: visible; /* ← важно! */
+  overflow: visible; 
 }
 
 .minimize-btn {
@@ -517,9 +494,9 @@ export default {
   align-items: center;
   gap: 10px;
   padding: 5px 0;
- justify-content: center; /* ← Центрируем элементы */
-  height: 100%; /* ← Занимаем всю высоту */
-  margin-top: -9px/* ← Поднимаем выше */
+ justify-content: center; 
+  height: 100%;
+  margin-top: -9px;
 }
 
 .minimized-title {
@@ -527,7 +504,6 @@ export default {
   font-size: 16px;
 }
 
-/* Свернутый плеер занимает меньше места */
 .audio-player.minimized {
   padding: 5px 20px;
   height: 50px;

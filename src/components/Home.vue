@@ -8,7 +8,7 @@
         <h1>Pyrokinesis</h1>
         <div class="quote">
           <p>Люди говорят —  мол, тексты не <br>горят, но я сжигал в них всё и <br>птицей отпускал</p>
-          <img src=".." alt="">
+          <img src="../assets/icons/line.svg" alt="">
         </div>
       </div>
     </div>
@@ -134,16 +134,18 @@ export default {
 .main_content{
   position: relative;
   z-index: 2;
-  width: 1440px;
-
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100px;
+  box-sizing: border-box;
 }
 
 .main_content h1{
   font-family: "Koulen";
   font-size: 100px;
-  /* left: 795px;
-  top: 629px; */
-  margin: 560px;
+  margin: 567px;
   margin-right: 175px;
 }
 
@@ -152,6 +154,11 @@ export default {
    margin-left: 50px;
    font-size: 36px;
    line-height: 30px;
+}
+
+.quote img {
+  margin-top: -87px;
+  margin-left: 30px;
 }
 
 .cards {
@@ -166,6 +173,7 @@ export default {
   position: relative;
   cursor: pointer;
   z-index: 1000; 
+  transition: all 0.3s ease;
 }
 
 .card a {
@@ -180,6 +188,10 @@ export default {
   font-size: 24px;
   z-index: 1001; 
   pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-2px);
 }
 
 .biography_section h2 {
@@ -205,6 +217,7 @@ export default {
   background-size: contain;
   background-repeat: no-repeat;
   transition: background-image 0.3s ease;
+  cursor: pointer;
 }
 
 
@@ -217,9 +230,5 @@ export default {
   background-image: url('../assets/icons/up.svg');
   filter: brightness(0) invert(1)
 }
-
-
-
-
 
 </style>

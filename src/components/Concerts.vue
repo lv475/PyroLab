@@ -1,9 +1,8 @@
 <template>
   <div class="concerts-page">
     <div class="container">
-      <h2>Актуальные концерты</h2>
+      <h1>Актуальные концерты</h1>
       
-      <!-- Просто афиша турне -->
       <div class="tour-poster">
         <div class="poster-wrapper">
           <img :src="posterMoscow" alt="Концерт Москва" class="poster" />
@@ -17,7 +16,6 @@
         
       </div>
         
-        <!-- Ссылка на билеты -->
         <a 
           href="https://pyrokinesistour.ru/?ysclid=millv4ietj494226044#rec754260074" 
           target="_blank" 
@@ -26,9 +24,8 @@
           Купить билеты на официальном сайте
         </a>
 
-      <!-- Если афиши нет -->
       <div v-if="noConcerts" class="no-concerts">
-        <h3>Концертов пока нет</h3>
+        <h2>Концертов пока нет</h2>
         <p>Следите за обновлениями</p>
       </div>
     </div>
@@ -50,16 +47,16 @@ function showNoConcerts() {
 
 <style scoped>
 .concerts-page {
-  padding: 2rem;
+  padding: 32px;
   text-align: center;
 }
 
 .container {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0px auto;
 }
 
-h2 {
+h1 {
   text-align: center;
   margin-bottom: 40px;
   color: #333;
@@ -69,10 +66,10 @@ h2 {
 
 .tour-poster {
   display: flex;
-  gap: 2rem;
+  gap: 32px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
 }
 
 .poster-wrapper {
@@ -85,7 +82,7 @@ h2 {
   width: 100%;
   max-width: 600px;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
@@ -113,11 +110,11 @@ h2 {
 }
 
 .no-concerts {
-  padding: 4rem 2rem;
+  padding: 64px 32px;
   color: #666;
 }
 
-.no-concerts h3 {
-  margin-bottom: 1rem;
+.no-concerts h2 {
+  margin-bottom: 16px;
 }
 </style>

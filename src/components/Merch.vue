@@ -1,6 +1,6 @@
 <template>
   <div class="merch-page">
-    <h2>Мерч</h2>
+    <h1>Мерч</h1>
     
     <div class="catalog">
       <div 
@@ -18,7 +18,6 @@
         </div>
         <div class="product-info">
           <h3>{{ product.name }}</h3>
-          <!-- ИСПРАВЛЕНО: Убрано описание из каталога -->
         </div>
       </div>
     </div>
@@ -87,7 +86,7 @@ export default {
   padding: 20px;
 }
 
-.merch-page h2 {
+.merch-page h1 {
   text-align: center;
   margin-bottom: 40px;
   color: #333;
@@ -137,28 +136,18 @@ export default {
 
 .product-info h3 {
   margin: 0 0 10px 0;
-  font-size: 1.2rem;
+  font-size: 20px;
   color: #333;
 }
 
 .loading, .error {
   text-align: center;
   padding: 40px;
-  font-size: 1.1rem;
+  font-size: 18px;
 }
 
 .error {
   color: #e74c3c;
 }
 
-@media (max-width: 768px) {
-  .catalog {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
-  .merch-page {
-    padding: 15px;
-  }
-}
 </style>

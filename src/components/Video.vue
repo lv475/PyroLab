@@ -1,15 +1,13 @@
 <template>
   <div class="video-page">
     <header class="page-header">
-      <h2>Видео</h2>
+      <h1>Видео</h1>
     </header>
 
-    <!-- Загрузка -->
     <div v-if="loading" class="loading">
       <p>Загрузка видео...</p>
     </div>
 
-    <!-- Сетка видео -->
     <div v-else-if="videos.length > 0" class="videos-grid">
       <div 
         v-for="video in videos"
@@ -27,24 +25,20 @@
           loading="lazy"
         />
         <div v-else class="thumbnail-placeholder">
-          <!-- Плейсхолдер -->
         </div>
         
-        <!-- ИКОНКА ПЛЕЙ - ТОЛЬКО НА КАРТИНКЕ -->
         <div class="play-overlay">
           <div class="play-icon"></div>
         </div>
       </div>
     </div>
     
-    <!-- Название видео (ОТДЕЛЬНО от картинки) -->
         <div class="video-info">
         <h3>{{ video.title }}</h3>
         </div>
     </div>
     </div>
 
-    <!-- Если видео нет -->
     <div v-else class="no-videos">
       <p>Нет доступных видео</p>
       <button @click="loadVideos" class="action-btn">Обновить</button>
@@ -79,7 +73,6 @@ async function loadVideos() {
     
     if (error) throw error
     
-    // Очищаем URL для всех видео
     videos.value = (data || []).map(video => ({
       ...video,
       vk_url: cleanVideoUrl(video.vk_url)
@@ -117,7 +110,7 @@ onMounted(() => {
   margin-bottom: 40px;
 }
 
-.page-header h2 {
+.page-header h1 {
   text-align: center;
   margin-bottom: 40px;
   color: #333;
@@ -161,12 +154,11 @@ onMounted(() => {
   border-radius: 8px 8px 0 0;
 }
 
-/* Сама картинка */
 .thumbnail {
   position: relative;
   width: 100%;
   height: 0;
-  padding-bottom: 56.25%; /* 16:9 соотношение */
+  padding-bottom: 56.25%; 
   overflow: hidden;
   background: #000;
 }
@@ -181,9 +173,6 @@ onMounted(() => {
   transition: transform 0.3s ease;
 }
 
-
-
-/* ===== ИКОНКА ПЛЕЙ ===== */
 .play-overlay {
   position: absolute;
   top: 0;
@@ -201,14 +190,13 @@ onMounted(() => {
 .play-icon {
   width: 70px;
   height: 70px;
-  background: rgba(255, 255, 255, 0.15); /* СВЕТЛЫЙ ПОЛУПРОЗРАЧНЫЙ */
+  background: rgba(255, 255, 255, 0.15); 
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   transition: all 0.2s ease;
-  /* Убрал все лишнее: */
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border: none;
@@ -216,7 +204,6 @@ onMounted(() => {
   color: transparent;
 }
 
-/* Стрелка внутри круга */
 .play-icon::before {
   content: '';
   position: absolute;
@@ -233,13 +220,11 @@ onMounted(() => {
 }
 
 .video-card:hover .play-icon {
-  background: rgba(17, 17, 17, 0.4); /* ТЕМНЕЕТ при наведении */
-  transform: scale(1.08); /* КРУГ увеличивается */
+  background: rgba(17, 17, 17, 0.4); 
+  transform: scale(1.08); 
   border-color: rgba(255, 255, 255, 0.3);
 }
 
-
-/* Название видео (под картинкой) */
 .video-info {
   padding: 16px;
   background: white;

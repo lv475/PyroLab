@@ -4,7 +4,6 @@
     class="mini-player"
     :style="{ left: position.x + 'px', top: position.y + 'px' }"
   >
-    <!-- Шапка плеера -->
     <div class="player-header" @mousedown="startDrag">
       <span class="video-title">{{ currentVideo.title }}</span>
       <div class="player-controls">
@@ -17,7 +16,6 @@
       </div>
     </div>
     
-    <!-- Видео -->
     <iframe 
       :src="cleanVideoUrl(currentVideo.vk_url)"
       frameborder="0"
@@ -39,7 +37,6 @@ const position = ref({ x: 20, y: 20 })
 const isDragging = ref(false)
 const dragOffset = ref({ x: 0, y: 0 })
 
-// Функция очистки URL
 function cleanVideoUrl(url) {
   if (!url) return ''
   let cleaned = url.toString()
@@ -48,7 +45,6 @@ function cleanVideoUrl(url) {
   return cleaned.trim()
 }
 
-// Начать перетаскивание
 function startDrag(e) {
   isDragging.value = true
   dragOffset.value = {
@@ -60,7 +56,6 @@ function startDrag(e) {
   document.addEventListener('mouseup', stopDrag)
 }
 
-// Перетаскивание
 function onDrag(e) {
   if (!isDragging.value) return
   
@@ -69,7 +64,6 @@ function onDrag(e) {
     y: e.clientY - dragOffset.value.y
   }
   
-  // Не выходить за границы
   const maxX = window.innerWidth - 320
   const maxY = window.innerHeight - 220
   
@@ -77,31 +71,26 @@ function onDrag(e) {
   position.value.y = Math.max(10, Math.min(position.value.y, maxY))
 }
 
-// Остановить перетаскивание
 function stopDrag() {
   isDragging.value = false
   document.removeEventListener('mousemove', onDrag)
   document.removeEventListener('mouseup', stopDrag)
 }
 
-// Развернуть видео на полную страницу
 function expandVideo() {
   if (!currentVideo.value) return
   router.push(`/video/${currentVideo.value.id}`)
   close()
 }
 
-// Закрыть мини-плеер
 function close() {
   currentVideo.value = null
 }
 
-// Слушаем события для запуска мини-плеера
 function handleMiniPlayerStart(event) {
   currentVideo.value = event.detail
 }
 
-// Инициализация
 onMounted(() => {
   window.addEventListener('start-mini-player', handleMiniPlayerStart)
 })

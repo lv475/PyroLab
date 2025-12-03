@@ -1,8 +1,6 @@
-
-
 <template>
   <div class="discography-page">
-    <h2>Дискография</h2>
+    <h1>Дискография</h1>
     
     <div v-if="loading" class="loading">Загружаем альбомы...</div>
     
@@ -16,13 +14,6 @@
         <img :src="album.cover_url" :alt="album.title" class="album-cover">
         <div class="album-info">
           <h3>{{ album.title }}</h3>
-          
-          
-          <!-- Описание альбома прямо в коде -->
-          <!-- <div class="description">
-            <p>Студийный альбом • 2023 год</p>
-            <p>8 треков • 35 минут</p>
-          </div> -->
         </div>
       </div>
     </div>
@@ -46,33 +37,22 @@ export default {
   methods: {
     async loadAlbums() {
       try {
-        console.log('🔄 Начинаем загрузку альбомов...')
-    
         const { data: albums, error } = await supabase
           .from('albums')
           .select('*')
           .order('created_at', { ascending: false })
         
-        console.log('📊 Ответ от Supabase:', { data: albums, error })
-        
-        if (error) {
-          console.error('❌ Ошибка Supabase:', error)
-          throw error
-        }
-
-        console.log('✅ Альбомы загружены:', albums)
+        if (error) throw error
         
         this.albums = albums
       } catch (error) {
         console.error('Ошибка загрузки альбомов:', error)
       } finally {
         this.loading = false
-        console.log('🏁 Загрузка завершена, loading:', this.loading, 'Альбомов:', this.albums.length)
       }
     },
     
     goToAlbum(albumId) {
-      // Переход на страницу альбома
       this.$router.push(`/album/${albumId}`)
     }
   }
@@ -86,7 +66,7 @@ export default {
   margin: 0 auto;
 }
 
-.discography-page h2 {
+.discography-page h1 {
   text-align: center;
   margin-bottom: 40px;
   color: #333;
@@ -96,7 +76,7 @@ export default {
 
 .albums-grid {
   display: grid;
-  grid-template-columns: repeat( 4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 75px;
 }
 
@@ -106,8 +86,6 @@ export default {
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 254px;
-  
-
 }
 
 .album-card:hover {
@@ -121,30 +99,16 @@ export default {
   margin-bottom: 10px;
 }
 
-/* .album-info {
-  padding: 10px;
-} */
-
 .album-info h3 {
   font-size: 20px;
   color: #ffffff;
   text-align: center;
 }
 
-/* .description {
-  color: #666;
-} */
-
-/* .description p {
-  margin: 5px 0;
-  font-size: 0.9em;
-  line-height: 1.4;
-} */
-
 .loading {
   text-align: center;
   padding: 60px;
-  font-size: 1.2em;
+  font-size: 16px;
   color: #666;
 }
 </style>

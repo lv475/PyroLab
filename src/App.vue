@@ -18,14 +18,7 @@
     </nav>
   </header>
 
-  <!-- <div style="position: fixed; top: 10px; left: 10px; background: red; color: white; padding: 10px; z-index: 10000;">
-      Store: {{ 
-        audioStore.isVisible ? 'ВИДИМ' : 'СКРЫТ',
-        audioStore.currentTrack ? audioStore.currentTrack.title : 'нет трека'
-      }}
-    </div> -->
 
-  <!-- активная страница -->
   <RouterView />  
 
   <AudioPlayer
@@ -54,7 +47,7 @@
         <router-link to="/discography">Дискография</router-link>
         <router-link to="/concerts">Концерты</router-link>
         <router-link to="/favorites">Избранные</router-link>
-        <router-link to="/photos">Фото</router-link>
+        <router-link to="/photo">Фото</router-link>
         <router-link to="/videos">Видео</router-link>
         <router-link to="/merch">Мерч</router-link>
       
@@ -122,20 +115,13 @@ export default {
     }
   },
   methods: {
-    // changeTrack(index) {
-    //   this.$audioPlayer.currentTrackIndex = index
-    //   this.$audioPlayer.currentTrack = this.$audioPlayer.playlist[index]
-    // },
     async goToBiography() {
       if (this.$route.path === '/') {
-        // Мы уже на главной - просто скроллим
         this.$nextTick(() => {
           this.scrollToBiography()
         })
       } else {
-        // Переходим на главную без хэша
         await this.$router.push('/')
-        // После перехода скроллим к элементу
         this.$nextTick(() => {
           this.scrollToBiography()
         })
@@ -290,8 +276,8 @@ html, body {
 }
 
 .social_links_column a:nth-last-child(2) {
-  grid-column: 2 / 3; /* Занимают колонки 2 и 3 */
-  justify-self: center; /* Центрируем внутри этой области */
+  grid-column: 2 / 3; 
+  justify-self: center; 
 }
 
 .text_container p {
@@ -300,15 +286,5 @@ html, body {
 
 </style>
 
-<!-- .nav a {
-    display: flex !important;
-    gap: 30px;
-    color: white;
-    text-decoration: none;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    margin-left: auto;
-    align-items: center;
-  }
-   -->
+
 

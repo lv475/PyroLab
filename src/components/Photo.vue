@@ -1,9 +1,8 @@
 <template>
   <div class="photos-page">
     <div class="container">
-      <h2>Фотогалерея</h2>
+      <h1>Фотогалерея</h1>
       
-      <!-- Фильтр по годам -->
       <div class="years-filter">
         <button 
           v-for="year in availableYears" 
@@ -15,12 +14,10 @@
         </button>
       </div>
 
-      <!-- Загрузчик -->
       <div v-if="loading" class="loading">
         Загрузка фотографий...
       </div>
 
-      <!-- Сетка фотографий -->
       <div v-else class="photos-grid">
         <div 
           v-for="photo in filteredPhotos" 
@@ -41,7 +38,6 @@
         </div>
       </div>
 
-      <!-- Лайтбокс -->
       <div v-if="selectedPhoto" class="lightbox" @click="closeLightbox">
         <div class="lightbox-content">
           <button class="close-btn" @click="closeLightbox">×</button>
@@ -72,14 +68,12 @@ export default {
     const selectedYear = ref('all')
     const selectedPhoto = ref(null)
     const selectedPhotoIndex = ref(0)
-    // const currentFilteredPhotos = ref([])
 
-    // Получение фотографий из Supabase - ИСПОЛЬЗУЕМ gallery_photos!
     const fetchPhotos = async () => {
       try {
         loading.value = true
         const { data, error } = await supabase
-          .from('gallery_photos')  
+          .from('gallery_photos')
           .select('*')
           .order('year', { ascending: false })
           .order('created_at', { ascending: false })
@@ -93,7 +87,6 @@ export default {
       }
     }
 
-    // Остальной код без изменений...
     const availableYears = computed(() => {
       const years = [...new Set(photos.value.map(photo => photo.year))].sort((a, b) => b - a)
       return ['all', ...years]
@@ -115,9 +108,7 @@ export default {
     const openLightbox = (photo) => {
       selectedPhoto.value = photo
       selectedPhotoIndex.value = filteredPhotos.value.findIndex(p => p.id === photo.id)
-      console.log('📸 Открыто фото:', photo.year, 'индекс:', selectedPhotoIndex.value)
     }
-    
 
     const closeLightbox = () => {
       selectedPhoto.value = null
@@ -125,14 +116,12 @@ export default {
 
     const nextPhoto = () => {
       const nextIndex = (selectedPhotoIndex.value + 1) % filteredPhotos.value.length
-      console.log('➡️ Следующее фото:', nextIndex, 'из', filteredPhotos.value.length)
       selectedPhoto.value = filteredPhotos.value[nextIndex]
       selectedPhotoIndex.value = nextIndex
     }
 
     const prevPhoto = () => {
       const prevIndex = (selectedPhotoIndex.value - 1 + filteredPhotos.value.length) % filteredPhotos.value.length
-      console.log('⬅️ Предыдущее фото:', prevIndex, 'из', filteredPhotos.value.length)
       selectedPhoto.value = filteredPhotos.value[prevIndex]
       selectedPhotoIndex.value = prevIndex
     }
@@ -166,16 +155,15 @@ export default {
 
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0px auto;
 }
 
-h2 {
+h1 {
   text-align: center;
   margin-bottom: 40px;
   color: #333;
   font-size: 40px;
   font-family: "Zen_Kaku_Gothic_New";
-  
 }
 
 .years-filter {
@@ -220,7 +208,7 @@ h2 {
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -255,14 +243,13 @@ h2 {
   line-height: 1.4;
 }
 
-/* Лайтбокс */
 .lightbox {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0px;
+  left: 0px;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;

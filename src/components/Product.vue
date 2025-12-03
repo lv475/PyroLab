@@ -112,10 +112,11 @@ export default {
   cursor: pointer;
   margin-bottom: 20px;
   padding: 10px 0;
+  transition: transform 0.3s ease;
 }
 
 .back-button:hover {
-  text-decoration: underline;
+  color: #333;
 }
 
 .product-detail {
@@ -123,21 +124,19 @@ export default {
   grid-template-columns: 1fr 1fr;
   gap: 50px;
   align-items: start;
-  /* background: linear-gradient(135deg, #ffffff 0%, #2a2a2a 100%); */
 }
 
 .product-image {
-  /* Контейнер для картинки */
   width: 100%;
 }
 
-.product-img { /* ДОБАВЬ ЭТИ СТИЛИ */
+.product-img { 
   width: 100%;
   max-width: 100%;
   height: auto;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  object-fit: cover; /* Чтобы картинка не искажалась */
+  object-fit: cover; 
 }
 
 .product-info {
@@ -185,14 +184,5 @@ export default {
   color: #e74c3c;
 }
 
-@media (max-width: 768px) {
-  .product-detail {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-  
-  .product-page {
-    padding: 15px;
-  }
-}
+
 </style>

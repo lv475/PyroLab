@@ -23,16 +23,20 @@
         />
       </div>
 
-      <div class="video-info">
-        <h2>{{ video.title }}</h2>
-        
-        <div class="video-actions">
-          <button @click="startMiniPlayer" class="action-btn minimize-btn">
-            Свернуть в мини-плеер
+      <div class="info-card">
+        <div class="info-header">
+          <h2>{{ video.title }}</h2>
+          <button @click="startMiniPlayer" class="mini-player-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 7H10V9H9V10H7V7ZM14 7H17V10H15V9H14V7ZM7 14H9V15H10V17H7V14ZM14 14H17V17H14V15H15V14H14Z"/>
+            </svg>
+            Мини-плеер
           </button>
-          <!-- <button @click="goBack" class="action-btn">
-            ✕ Закрыть
-          </button> -->
+        </div>
+
+        <div v-if="video.description" class="info-description">
+          <h3>Описание</h3>
+          <p>{{ video.description }}</p>
         </div>
       </div>
     </div>
@@ -49,7 +53,6 @@ const router = useRouter()
 const video = ref(null)
 const loading = ref(true)
 
-// Функция очистки URL
 function cleanVideoUrl(url) {
   if (!url) return ''
   let cleaned = url.toString()
@@ -58,11 +61,9 @@ function cleanVideoUrl(url) {
   return cleaned.trim()
 }
 
-// Загрузка видео
 async function loadVideo() {
   loading.value = true
   try {
-    // Проверяем что ID есть
     if (!route.params.id) {
       console.error('Нет ID видео')
       router.push('/videos')
@@ -87,12 +88,10 @@ async function loadVideo() {
   }
 }
 
-// Назад к списку видео
 function goBack() {
   router.push('/videos')
 }
 
-// Запуск мини-плеера
 function startMiniPlayer() {
   if (!video.value) return
   
@@ -124,17 +123,13 @@ onMounted(() => {
 .back-btn {
   background: none;
   border: none;
-  color: #666;
-  font-size: 16px;
-  cursor: pointer;
-  padding: 10px 0;
-  margin-bottom: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: color 0.2s;
-  font-weight: 600;
   font-family: "Zen_Kaku_Gothic_New";
+  color: #646464;
+  font-size: 18px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  transition: transform 0.3s ease;
 }
 
 .back-btn:hover {
@@ -144,11 +139,12 @@ onMounted(() => {
 .video-container {
   position: relative;
   width: 100%;
-  padding-bottom: 50%;
+  padding-bottom: 56.25%; 
   background: #000;
   border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 25px; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .video-iframe {
@@ -160,60 +156,85 @@ onMounted(() => {
   border: none;
 }
 
-.video-info {
-  padding: 0 10px;
+.info-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
 }
 
-.video-info h2 {
-  font-size: 24px;
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.info-header h2 {
+  font-size: 28px;
   font-weight: 700;
   color: #333;
-  margin: 0 0 20px 0;
+  margin: 0;
   line-height: 1.3;
   font-family: "Zen_Kaku_Gothic_New";
+  flex: 1;
+  min-width: 300px;
 }
 
-.video-actions {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.action-btn {
-  padding: 12px 24px;
-  border: none;
+.mini-player-btn {
+  background: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 16px;
+  padding: 10px 20px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
 }
 
-.minimize-btn {
-  background: #ffffff;
-  color: rgb(0, 0, 0);
+.mini-player-btn:hover {
+  background: #d6d6d6;
+  border-color: #b3b3b3;
+  transform: translateY(-1px);
 }
 
-.minimize-btn:hover {
-  background: #cfcfcf;
+.mini-player-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
-.action-btn:not(.minimize-btn) {
-  background: #f0f0f0;
+.info-description {
+  background: #e9e9e9;
+  padding: 20px 24px;
+  border-radius: 8px;
+  border-left: 4px solid #292929;
+}
+
+.info-description h3 {
+  font-size: 18px;
+  font-weight: 600;
   color: #333;
+  margin: 0 0 12px 0;
+  font-family: "Zen_Kaku_Gothic_New";
 }
 
-.action-btn:not(.minimize-btn):hover {
-  background: #e0e0e0;
+.info-description p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+  white-space: pre-line;
 }
 
 .loading, .error {
   text-align: center;
   padding: 60px 20px;
-  background: #f9f9f9;
   border-radius: 12px;
   margin-top: 40px;
 }
@@ -225,17 +246,9 @@ onMounted(() => {
 
 .error p {
   font-size: 18px;
-  color: #e74c3c;
+  color: #6b1e15;
   margin-bottom: 20px;
 }
 
-.error .action-btn {
-  background: #4a90e2;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-}
 
 </style>

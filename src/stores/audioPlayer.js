@@ -10,30 +10,24 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
   }),
   
   actions: {
-    // Установить текущий трек и показать плеер
     setCurrentTrack(track, playlist = [], index = 0) {
-    //   console.log('🔄 Store.setCurrentTrack вызван:', track?.title)
       
-      // Явно обновляем каждое поле
       this.currentTrack = track
       this.playlist = playlist
       this.currentTrackIndex = index
       this.isPlaying = false
       this.isVisible = true
       
-    //   console.log('🔄 Store обновлен:'
         , {
         isVisible: this.isVisible,
         currentTrack: this.currentTrack?.title
       }
     },
     
-    // Переключить воспроизведение
     togglePlay() {
       this.isPlaying = !this.isPlaying
     },
     
-    // Сменить трек
     changeTrack(index) {
       if (index >= 0 && index < this.playlist.length) {
         this.currentTrackIndex = index
@@ -42,7 +36,6 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
       }
     },
     
-    // Скрыть плеер
     hidePlayer() {
       this.isVisible = false
       this.isPlaying = false
