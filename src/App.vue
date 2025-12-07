@@ -28,6 +28,8 @@
       :songList="audioStore.playlist"
       :currentSongIndex="audioStore.currentTrackIndex"
       @change-track="changeTrack"
+      @track-ended="handleTrackEnded"
+      ref="audioPlayerRef" 
   />
 
   <MiniPlayer />
@@ -106,7 +108,8 @@ export default {
     const audioStore = useAudioPlayerStore()
     
     const changeTrack = (index) => {
-      audioStore.changeTrack(index)
+  console.log('App: changeTrack to index', index)
+  audioStore.changeTrack(index)
     }
 
     return {
@@ -141,7 +144,33 @@ export default {
           })
         }
       }, 150)
+    },
+    handleTrackEnded() {
+      console.log('Трек закончился, включаем следующую...')
+      
+      // Автоматически включаем следующую песню
+      if (this.audioStore.currentTrackIndex < this.audioStore.playlist.length - 1) {
+        const nextIndex = this.audioStore.currentTrackIndex + 1
+        this.audioStore.changeTrack(nextIndex)
+      }
+    },
+    watch: {
+  'audioStore.isPlaying': function(newVal) {
+    if (newVal) {
+      // Когда isPlaying становится true, запускаем воспроизведение
+      this.$nextTick(() => {
+        const audioElement = document.querySelector('audio')
+        if (audioElement && audioElement.src) {
+          audioElement.play().catch(e => {
+            console.log('Не удалось запустить воспроизведение:', e)
+          })
+        }
+      })
     }
+  }
+}
+  
+
   }
 }
     // goToBiography() {

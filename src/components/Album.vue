@@ -56,14 +56,10 @@
 
 <script>
 import { supabase } from '../lib/supabase'
-import AudioPlayer from './AudioPlayer.vue'
 import { useAudioPlayerStore } from '../stores/audioPlayer'
 
 export default {
   name: 'AlbumPage',
-  components: { 
-    AudioPlayer
-  },
   setup() {
     const audioStore = useAudioPlayerStore()
     return {
@@ -135,17 +131,36 @@ export default {
   async mounted() {
     const albumId = parseInt(this.$route.params.id)
     await this.loadAlbum(albumId)
+    
+    // Слушаем окончание трека
+    setTimeout(() => {
+      const audioElement = document.querySelector('audio')
+      if (audioElement) {
+        audioElement.addEventListener('ended', () => {
+          if (this.currentSongIndex !== null && 
+              this.currentSongIndex < this.songs.length - 1) {
+            const nextIndex = this.currentSongIndex + 1
+            const nextSong = this.songs[nextIndex]
+            this.selectSong(nextSong)
+          }
+        })
+      }
+    }, 1000)
   },
   methods: {
     onTrackChange(newIndex) {
       this.currentSongIndex = newIndex
       this.selectSong(this.songs[newIndex])
     },
+    
     selectSong(song) {
       this.currentSong = song
       this.currentSongIndex = this.songs.findIndex(s => s.id === song.id)
       this.audioStore.setCurrentTrack(song, this.songs, this.currentSongIndex)
+      
+      
     },
+    
     hexToRgb(hex) {
       if (!hex) return { r: 129, g: 129, b: 129 }
       hex = hex.replace('#', '')
@@ -154,12 +169,15 @@ export default {
       const b = parseInt(hex.substring(4, 6), 16)
       return { r, g, b }
     },
+    
     getAlbumColors(albumId) {
       return this.albumsData.find(album => album.id === albumId)
     },
+    
     getDefaultAlbumDescription() {
       return 'Описание альбома будет добавлено позже.'
     },
+    
     async loadAlbum(albumId) {
       try {
         this.loading = true

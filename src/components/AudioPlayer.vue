@@ -172,10 +172,27 @@ export default {
     },
 
     nextTrack() {
-    if (this.hasNext) {
-      this.$emit('change-track', this.currentSongIndex + 1)  
-      }
-    },
+  if (this.hasNext) {
+    const nextIndex = this.currentSongIndex + 1
+    
+    // Сначала отправляем событие смены трека
+    this.$emit('change-track', nextIndex)
+    
+    // Затем автоматически запускаем воспроизведение
+    this.$nextTick(() => {
+      setTimeout(() => {
+        const audio = this.$refs.audioElement
+        if (audio) {
+          console.log('AudioPlayer: Автозапуск следующей песни')
+          audio.currentTime = 0
+          audio.play().catch(e => {
+            console.log('AudioPlayer: Не удалось автозапустить:', e)
+          })
+        }
+      }, 300) // Даем время на загрузку нового трека
+    })
+  }
+},
 
     updateProgress() {
       const audio = this.$refs.audioElement
@@ -189,11 +206,23 @@ export default {
     },
 
     onEnded() {
-      this.isPlaying = false
-      this.currentTime = 0
-      this.progress = 0
-      this.nextTrack()
-    },
+  this.currentTime = 0
+  this.progress = 0
+  
+  // НЕ сбрасываем isPlaying сразу
+  // this.isPlaying = false // УБЕРИТЕ ЭТУ СТРОКУ
+  
+  console.log('Трек закончился (AudioPlayer)')
+  
+  // Сначала отправляем событие окончания трека
+  this.$emit('track-ended')
+  
+  // Затем включаем следующую песню
+  if (this.hasNext) {
+    console.log('Включаем следующую песню через nextTrack()')
+    this.nextTrack()
+  }
+},
 
     seek(event) {
       const progressBar = event.currentTarget

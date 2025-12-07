@@ -6,33 +6,54 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
     currentTrackIndex: 0,
     playlist: [],
     isPlaying: false,
-    isVisible: false
+    isVisible: false,
+    shouldAutoPlay: true // Добавляем флаг
   }),
   
   actions: {
     setCurrentTrack(track, playlist = [], index = 0) {
-      
       this.currentTrack = track
       this.playlist = playlist
       this.currentTrackIndex = index
-      this.isPlaying = false
       this.isVisible = true
-      
-        , {
-        isVisible: this.isVisible,
-        currentTrack: this.currentTrack?.title
-      }
+      this.shouldAutoPlay = true // Говорим что нужно автовоспроизведение
     },
     
     togglePlay() {
       this.isPlaying = !this.isPlaying
     },
     
+    play() {
+      this.isPlaying = true
+      this.shouldAutoPlay = true
+    },
+    
+    pause() {
+      this.isPlaying = false
+    },
+    
     changeTrack(index) {
       if (index >= 0 && index < this.playlist.length) {
         this.currentTrackIndex = index
         this.currentTrack = this.playlist[index]
-        this.isPlaying = false
+        this.isPlaying = true
+        this.shouldAutoPlay = true
+      }
+    },
+    
+    nextTrack() {
+      if (this.currentTrackIndex < this.playlist.length - 1) {
+        const nextIndex = this.currentTrackIndex + 1
+        this.changeTrack(nextIndex)
+        return true // Успешно переключились
+      }
+      return false // Нет следующей песни
+    },
+    
+    prevTrack() {
+      if (this.currentTrackIndex > 0) {
+        const prevIndex = this.currentTrackIndex - 1
+        this.changeTrack(prevIndex)
       }
     },
     
@@ -42,5 +63,5 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
       this.currentTrack = null
       this.playlist = []
     }
-}
+  }
 })
