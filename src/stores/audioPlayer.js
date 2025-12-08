@@ -7,7 +7,7 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
     playlist: [],
     isPlaying: false,
     isVisible: false,
-    shouldAutoPlay: true // Добавляем флаг
+    shouldAutoPlay: true 
   }),
   
   actions: {
@@ -16,7 +16,7 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
       this.playlist = playlist
       this.currentTrackIndex = index
       this.isVisible = true
-      this.shouldAutoPlay = true // Говорим что нужно автовоспроизведение
+      this.shouldAutoPlay = true
     },
     
     togglePlay() {
@@ -45,9 +45,9 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
       if (this.currentTrackIndex < this.playlist.length - 1) {
         const nextIndex = this.currentTrackIndex + 1
         this.changeTrack(nextIndex)
-        return true // Успешно переключились
+        return true 
       }
-      return false // Нет следующей песни
+      return false 
     },
     
     prevTrack() {

@@ -14,7 +14,6 @@
       </div>
 
       <div class="top-controls" v-if="!isMinimized">
-         <!-- @mouseenter="showFavoriteTooltip = true" @mouseleave="showFavoriteTooltip = false" -->
           <div class="favorite-container">
             <button class="control-btn favorite" 
             @mouseenter="showFavoriteTooltip = true" 
@@ -37,12 +36,15 @@
               alt="Play"
               class="icon"
             >
-            <img 
+            
+            <svg 
               v-else 
-              src="../assets/icons/pause.svg" 
-              alt="Pause"
-              class="icon"
+              viewBox="0 0 40 40"
+              class="icon pause-svg"
             >
+              <rect x="4" y="0" width="10" height="40" fill="white"/>
+              <rect x="26" y="0" width="10" height="40" fill="white"/>
+            </svg>
           </button>
 
           <button class="control-btn next" @click="nextTrack" :disabled="!hasNext">
@@ -83,12 +85,15 @@
             alt="Play"
             class="icon"
           >
-          <img 
-            v-else 
-            src="../assets/icons/pause.svg" 
-            alt="Pause"
-            class="icon"
-          >
+          
+          <svg 
+        v-else 
+        viewBox="0 0 40 40"
+        class="icon pause-svg"
+      >
+        <rect x="8" y="0" width="10" height="40" fill="white"/>
+        <rect x="22" y="0" width="10" height="40" fill="white"/>
+      </svg>
         </button>
         <span class="minimized-title">{{ currentSongTitle }}</span>
       </div>
@@ -175,10 +180,8 @@ export default {
   if (this.hasNext) {
     const nextIndex = this.currentSongIndex + 1
     
-    // Сначала отправляем событие смены трека
     this.$emit('change-track', nextIndex)
     
-    // Затем автоматически запускаем воспроизведение
     this.$nextTick(() => {
       setTimeout(() => {
         const audio = this.$refs.audioElement
@@ -189,7 +192,7 @@ export default {
             console.log('AudioPlayer: Не удалось автозапустить:', e)
           })
         }
-      }, 300) // Даем время на загрузку нового трека
+      }, 300) 
     })
   }
 },
@@ -209,15 +212,11 @@ export default {
   this.currentTime = 0
   this.progress = 0
   
-  // НЕ сбрасываем isPlaying сразу
-  // this.isPlaying = false // УБЕРИТЕ ЭТУ СТРОКУ
   
   console.log('Трек закончился (AudioPlayer)')
   
-  // Сначала отправляем событие окончания трека
   this.$emit('track-ended')
   
-  // Затем включаем следующую песню
   if (this.hasNext) {
     console.log('Включаем следующую песню через nextTrack()')
     this.nextTrack()
@@ -436,16 +435,64 @@ export default {
 }
 
 
+.control-btn.play-pause {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+  overflow: visible; 
+}
 
-.play-pause {
+.control-btn.play-pause .icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.pause-icon-large {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  z-index: 1;
+  margin: -10px; 
+}
+
+.control-btn.play-pause.is-paused {
+  width: 45px;
+  height: 45px;
+  margin: -2.5px; 
+}
+
+
+.control-btn.play-pause {
   width: 40px;
   height: 40px;
   color: black;
 }
 
-.play-pause:hover {
-  transform: scale(1.05);
+.control-btn.play-pause:hover {
+  transform: scale(1.1);
 }
+
+/* Иконки */
+.control-btn .icon {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+/* SVG пауза */
+.pause-svg {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
 
 .prev, .next {
   width: 40px;
@@ -536,5 +583,11 @@ export default {
 .audio-player.minimized {
   padding: 5px 20px;
   height: 50px;
+}
+
+
+.minimized-player .pause-svg {
+  width: 30px;
+  height: 30px;
 }
 </style>

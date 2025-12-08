@@ -8,17 +8,25 @@
       </div>
       
       <div class="product-info">
-        <h2>{{ product.name }}</h2>
+        <h1>{{ product.name }}</h1>
         
         
         <div v-if="product.description" class="description-section">
-          <h3>Описание</h3>
+         
           <p class="description">{{ product.description }}</p>
         </div>
         
-        <button @click="goToPurchase" class="buy-button">
+        <button 
+          v-if="product.purchase_url" 
+          @click="goToPurchase" 
+          class="buy-button"
+        >
           Купить на официальном сайте
         </button>
+        
+        <div v-else class="archive-notice">
+          <p class="archive-text">для ознакомления</p>
+        </div>
       </div>
     </div>
 
@@ -86,14 +94,10 @@ export default {
   margin-bottom: 20px;
 }
 
-.description-section h3 {
-  color: #333;
-  margin-bottom: 10px;
-}
 
 .description { 
   line-height: 1.6;
-  color: #666;
+  color: #727272;
   white-space: pre-line;
 }
 
@@ -149,7 +153,7 @@ export default {
   );
 }
 
-.product-info h2 {
+.product-info h1 {
   font-size: 26px;
   color: #ffffff;
   margin-bottom: 15px;
@@ -184,5 +188,20 @@ export default {
   color: #e74c3c;
 }
 
+.archive-notice {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
+.archive-text {
+  color: #b0b0b0;
+  font-family: "Zen_Kaku_Gothic_New";
+  font-size: 18px;
+  font-style: italic;
+  margin: 0;
+}
 </style>

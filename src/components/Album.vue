@@ -132,7 +132,6 @@ export default {
     const albumId = parseInt(this.$route.params.id)
     await this.loadAlbum(albumId)
     
-    // Слушаем окончание трека
     setTimeout(() => {
       const audioElement = document.querySelector('audio')
       if (audioElement) {
