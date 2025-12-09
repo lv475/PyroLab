@@ -59,25 +59,30 @@
       <div class="icon_container">
         <p>Pyrokinesis в соц сетях</p>
         <div class="social_links_column">
-          <a href="" class="social_links">
+          <a href="https://www.instagram.com/andrushapyro/" class="social_links">
             <img src="./assets/icons/inst.svg" alt="">
           </a>
-          <a href="" class="social_links">
+          <a href="https://www.tiktok.com/@pyrokinesis_official?_r=1&_t=ZS-924bYgmmgk9" class="social_links">
           <img src="./assets/icons/tt.svg" alt="">
           </a>
-          <a href="" class="social_links">
+          <a href="https://t.me/pyrokinesistg" class="social_links">
             <img src="./assets/icons/tg.svg" alt="">
           </a>
-          <a href="" class="social_links">
+          <a href="https://vk.com/pyrokinesis?from=groups" class="social_links">
             <img src="./assets/icons/wk.svg" alt="">
           </a>
-          <a href="" class="social_links">
+          <a href="https://open.spotify.com/artist/5rXtHvb8jMNgmSX7Khd77x?si=xk3TYtO6TzKl1jX7QSbBRQ" class="social_links">
             <img src="./assets/icons/spotify.svg" alt="">
           </a>
-          <a href="" class="social_links">
+          <a href="https://www.youtube.com/@officialpyrokinesis" class="social_links">
             <img src="./assets/icons/yt.svg" alt="">
           </a>
-          
+          <a href="https://music.yandex.ru/artist/5313769?utm_medium=copy_link&ref_id=bdb03607-35e1-4f32-b84f-151d1cc9d516" class="social_links">
+            <img src="./assets/icons/yandex.svg" alt="">
+          </a>
+          <a href="https://music.apple.com/ru/artist/pyrokinesis/1106141235" class="social_links">
+            <img src="./assets/icons/apple.svg" alt="">
+          </a>
         </div>
       </div>
     </div>
@@ -148,7 +153,6 @@ export default {
     handleTrackEnded() {
       console.log('Трек закончился, включаем следующую...')
       
-      // Автоматически включаем следующую песню
       if (this.audioStore.currentTrackIndex < this.audioStore.playlist.length - 1) {
         const nextIndex = this.audioStore.currentTrackIndex + 1
         this.audioStore.changeTrack(nextIndex)
@@ -157,7 +161,6 @@ export default {
     watch: {
   'audioStore.isPlaying': function(newVal) {
     if (newVal) {
-      // Когда isPlaying становится true, запускаем воспроизведение
       this.$nextTick(() => {
         const audioElement = document.querySelector('audio')
         if (audioElement && audioElement.src) {
@@ -173,25 +176,7 @@ export default {
 
   }
 }
-    // goToBiography() {
-    //   if (this.$route.path === '/') {
-    //     const element = document.getElementById('biography')
-    //     if (element) {
-    //       // element.scrollIntoView({ 
-    //       //   behavior: 'smooth',
-    //       //   block: 'start',
-    //       //   inline: 'nearest'
-    //       // })
-    //       window.scrollTo({
-    //             top: element.offsetTop,
-    //             behavior: 'smooth'
-    //         })
-    //     }
-    //   } else {
-    //     this.$router.push({ path: '/', hash: '#biography' })
-    //   }
-    // }
-  
+    
 
 </script>
 
@@ -236,6 +221,10 @@ html, body {
     margin-top: 7px;
   }
 
+  .header_logo:hover img {
+    filter: brightness(0) invert(0.9);
+  }
+
   .nav {
     display: flex;
   }
@@ -249,8 +238,25 @@ html, body {
     margin-right: 15px;
     font-size: 20px;
     font-family: "Zen_Kaku_Gothic_New";
+    transition: transform 0.3s ease;
   }
-  
+
+.nav a:hover {
+  color: rgb(202, 202, 202);
+}
+
+.nav a.router-link-active {
+  color: rgb(202, 202, 202);
+}
+
+.nav a.profile_icon:hover img {
+  filter: brightness(0) invert(0.8);
+}
+
+.nav a.profile_icon.router-link-active img {
+  filter: brightness(0) invert(0.8);
+}
+
 .footer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -284,6 +290,10 @@ html, body {
   transition: color 0.3s;
 }
 
+.footer_column a:hover {
+  color: #e6e6e6; 
+}
+
 .social_links_column {
   display: grid;
   grid-template-columns: repeat(4, 1fr); 
@@ -298,22 +308,23 @@ html, body {
   align-items: center;
 }
 
+.social_links:hover img {
+  opacity: 0.8;
+  transform: scale(1.1)
+}
+
 .social_links img {
   width: 24px;
   height: 24px;
-  
+  filter: brightness(0) invert(1); /* Белый цвет для всех иконок */
+  opacity: 0.6; /* Такая же прозрачность, как у остальных */
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.social_links_column a:nth-last-child(2) {
-  grid-column: 2 / 3; 
-  justify-self: center; 
-}
 
 .text_container p {
   margin-bottom: 10px;
 }
 
 </style>
-
-
 

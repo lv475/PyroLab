@@ -106,7 +106,7 @@ h1 {
 }
 
 .tickets-link:hover {
-  background: #636363;
+  background: #c4c4c4;
 }
 
 .no-concerts {
