@@ -1,6 +1,10 @@
 <template>
-  <div class="audio-player" :class="{ minimized: isMinimized }">
-
+  <div v-if="isVisible" class="audio-player" :class="{ minimized: isMinimized }">
+    <button class="close-btn" @click="closePlayer">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+      </svg>
+    </button>
     <button class="minimize-btn" @click="toggleMinimize">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
         <path v-if="!isMinimized" d="M19 13H5v-2h14v2z"/>
@@ -87,13 +91,13 @@
           >
           
           <svg 
-        v-else 
-        viewBox="0 0 40 40"
-        class="icon pause-svg"
-      >
-        <rect x="8" y="0" width="10" height="40" fill="white"/>
-        <rect x="22" y="0" width="10" height="40" fill="white"/>
-      </svg>
+            v-else 
+            viewBox="0 0 40 40"
+            class="icon pause-svg"
+          >
+            <rect x="8" y="0" width="10" height="40" fill="white"/>
+            <rect x="22" y="0" width="10" height="40" fill="white"/>
+          </svg>
         </button>
         <span class="minimized-title">{{ currentSongTitle }}</span>
       </div>
@@ -102,6 +106,7 @@
     <audio 
       ref="audioElement"
       :src="src"
+      preload="none"
       @timeupdate="updateProgress"
       @loadedmetadata="onLoadedMetadata"
       @ended="onEnded"
@@ -141,7 +146,7 @@ export default {
       showDownloadTooltip: false,
       showShareTooltip: false,
       isMinimized: false,
-      
+      isVisible: true,
     }
   },
 
@@ -151,6 +156,14 @@ export default {
     },
     hasNext() {
       return this.currentSongIndex < this.songList.length - 1
+    }
+  },
+
+  watch: {
+    src(newSrc) {
+      if (newSrc && !this.isVisible) {
+        this.isVisible = true  
+      }
     }
   },
 
@@ -166,15 +179,40 @@ export default {
       this.isPlaying = !this.isPlaying
     },
 
+    closePlayer() {
+      const audio = this.$refs.audioElement
+      if (audio) {
+        audio.pause()
+        audio.currentTime = 0
+      }
+      this.isPlaying = false
+      this.isVisible = false
+  },
+
     toggleMinimize() {
       this.isMinimized = !this.isMinimized
     },
 
     prevTrack() {
-    if (this.hasPrevious) {
-      this.$emit('change-track', this.currentSongIndex - 1)  
-      }
-    },
+  if (this.hasPrevious) {
+    const prevIndex = this.currentSongIndex - 1
+    
+    this.$emit('change-track', prevIndex)
+    
+    this.$nextTick(() => {
+      setTimeout(() => {
+        const audio = this.$refs.audioElement
+        if (audio) {
+          console.log('AudioPlayer: Автозапуск предыдущей песни')
+          audio.currentTime = 0
+          audio.play().catch(e => {
+            console.log('AudioPlayer: Не удалось автозапустить:', e)
+          })
+        }
+      }, 300) 
+    })
+  }
+},
 
     nextTrack() {
   if (this.hasNext) {
@@ -211,7 +249,6 @@ export default {
     onEnded() {
   this.currentTime = 0
   this.progress = 0
-  
   
   console.log('Трек закончился (AudioPlayer)')
   
@@ -479,14 +516,12 @@ export default {
   transform: scale(1.1);
 }
 
-/* Иконки */
 .control-btn .icon {
   width: 40px;
   height: 40px;
   display: block;
 }
 
-/* SVG пауза */
 .pause-svg {
   width: 40px;
   height: 40px;
@@ -551,6 +586,23 @@ export default {
 
 .player-container {
   overflow: visible; 
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.close-btn:hover {
+  background: rgba(255, 0, 0, 0.3);
 }
 
 .minimize-btn {

@@ -6,7 +6,6 @@
           </div>
     </RouterLink> 
     <nav class="nav">
-      <!-- ссылки по имени маршрута -->
        <a href="#" @click.prevent="goToBiography">Биография</a>
 
        <RouterLink :to="{ name: 'Discography'}">Дискография</RouterLink>
@@ -60,28 +59,28 @@
         <p>Pyrokinesis в соц сетях</p>
         <div class="social_links_column">
           <a href="https://www.instagram.com/andrushapyro/" class="social_links">
-            <img src="./assets/icons/inst.svg" alt="">
+            <img src="./assets/icons/inst.svg" alt="Instagram" width="24" height="24">
           </a>
           <a href="https://www.tiktok.com/@pyrokinesis_official?_r=1&_t=ZS-924bYgmmgk9" class="social_links">
-          <img src="./assets/icons/tt.svg" alt="">
+          <img src="./assets/icons/tt.svg" alt="TikTok" width="24" height="24">
           </a>
           <a href="https://t.me/pyrokinesistg" class="social_links">
-            <img src="./assets/icons/tg.svg" alt="">
+            <img src="./assets/icons/tg.svg" alt="Telegram" width="24" height="24">
           </a>
           <a href="https://vk.com/pyrokinesis?from=groups" class="social_links">
-            <img src="./assets/icons/wk.svg" alt="">
+            <img src="./assets/icons/wk.svg" alt="VK" width="24" height="24">
           </a>
           <a href="https://open.spotify.com/artist/5rXtHvb8jMNgmSX7Khd77x?si=xk3TYtO6TzKl1jX7QSbBRQ" class="social_links">
-            <img src="./assets/icons/spotify.svg" alt="">
+            <img src="./assets/icons/spotify.svg" alt="Spotify" width="24" height="24">
           </a>
           <a href="https://www.youtube.com/@officialpyrokinesis" class="social_links">
-            <img src="./assets/icons/yt.svg" alt="">
+            <img src="./assets/icons/yt.svg" alt="YouTube" width="24" height="24">
           </a>
           <a href="https://music.yandex.ru/artist/5313769?utm_medium=copy_link&ref_id=bdb03607-35e1-4f32-b84f-151d1cc9d516" class="social_links">
-            <img src="./assets/icons/yandex.svg" alt="">
+            <img src="./assets/icons/yandex.svg" alt="YandexMusic" width="24" height="24">
           </a>
           <a href="https://music.apple.com/ru/artist/pyrokinesis/1106141235" class="social_links">
-            <img src="./assets/icons/apple.svg" alt="">
+            <img src="./assets/icons/apple.svg" alt="AppltMusic" width="24" height="24">
           </a>
         </div>
       </div>
@@ -150,6 +149,17 @@ export default {
         }
       }, 150)
     },
+    methods: {
+  handlePlayerClosed() {
+    const audioStore = useAudioPlayerStore()
+    audioStore.closePlayer()  
+  },
+  
+  onTrackChange(newIndex) {
+    const audioStore = useAudioPlayerStore()
+    audioStore.changeTrack(newIndex)
+  }
+},
     handleTrackEnded() {
       console.log('Трек закончился, включаем следующую...')
       
@@ -172,12 +182,8 @@ export default {
     }
   }
 }
-  
-
   }
 }
-    
-
 </script>
 
 
@@ -316,14 +322,29 @@ html, body {
 .social_links img {
   width: 24px;
   height: 24px;
-  filter: brightness(0) invert(1); /* Белый цвет для всех иконок */
-  opacity: 0.6; /* Такая же прозрачность, как у остальных */
+  filter: brightness(0) invert(1); 
+  opacity: 0.6; 
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 
 .text_container p {
   margin-bottom: 10px;
+}
+
+.footer {
+  min-height: 300px !important; 
+  overflow: hidden; 
+}
+
+.footer_column {
+  min-height: 250px;
+}
+
+.social_links img {
+  width: 24px !important;
+  height: 24px !important;
+  display: block;
 }
 
 </style>

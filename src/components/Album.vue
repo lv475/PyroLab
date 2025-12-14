@@ -9,7 +9,15 @@
 
     <div class="songs_panel">
       <div class="album_info">
-        <img :src="album.cover_url" :alt="album.title" class="album_cover">
+        <img 
+          :src="album.cover_url" 
+          :alt="album.title" 
+          class="album_cover"
+          width="200"
+          height="200"
+          loading="lazy"
+        >
+
         <h2>{{ album.title }}</h2>
         
         <div class="album_description">
@@ -84,8 +92,8 @@ export default {
         {
           id: 1,
           name: 'геометрия тьмы',
-          primaryColor: '#474B5A',
-          secondaryColor: '#2D2927',
+          primaryColor: '#627282',
+          secondaryColor: '#24221D',
           textColor: 'white'
         },
         {
@@ -102,6 +110,55 @@ export default {
           secondaryColor: '#2E0809',
           textColor: 'white'
         },
+        {
+          id: 5,
+          name: 'Питер, чай, не Франция',
+          primaryColor: '#C7380F',
+          secondaryColor: '#000000',
+          textColor: 'white'
+        },
+        {
+          id: 6,
+          name: 'Моя милая пустота',
+          primaryColor: '#092D0E',
+          secondaryColor: '#000000',
+          textColor: 'white'
+        },
+        {
+          id: 7,
+          name: 'Корми демонов по расписанию',
+          primaryColor: '#000000',
+          secondaryColor: '#FFFFFF',
+          textColor: 'white'
+        },
+        {
+          id: 8,
+          name: '5',
+          primaryColor: '#8F1D21',
+          secondaryColor: '#000000',
+          textColor: 'white'
+        },
+        {
+          id: 9,
+          name: 'burn to die',
+          primaryColor: '#000000',
+          secondaryColor: '#FFFFFF',
+          textColor: 'white'
+        },
+        {
+          id: 10,
+          name: 'BLACK ROZE x RED ROZE',
+          primaryColor: '#000000',
+          secondaryColor: '#802722',
+          textColor: 'white'
+        },
+        {
+          id: 11,
+          name: 'акустический',
+          primaryColor: '#040404',
+          secondaryColor: '#646466',
+          textColor: 'white'
+        },
       ]
     }
   },
@@ -113,18 +170,12 @@ export default {
           '--album-primary': '#4a4a4a',
           '--album-secondary': '#2a2a2a',
           '--album-text': 'white',
-          '--album-primary-rgb': '129, 129, 129',
-          '--album-secondary-rgb': '29, 29, 29'
         }
       }
-      const primaryRgb = this.hexToRgb(albumColors.primaryColor)
-      const secondaryRgb = this.hexToRgb(albumColors.secondaryColor)
       return {
         '--album-primary': albumColors.primaryColor,
         '--album-secondary': albumColors.secondaryColor,
         '--album-text': albumColors.textColor,
-        '--album-primary-rgb': `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}`,
-        '--album-secondary-rgb': `${secondaryRgb.r}, ${secondaryRgb.g}, ${secondaryRgb.b}`
       }
     }
   },
@@ -158,15 +209,6 @@ export default {
       this.audioStore.setCurrentTrack(song, this.songs, this.currentSongIndex)
       
       
-    },
-    
-    hexToRgb(hex) {
-      if (!hex) return { r: 129, g: 129, b: 129 }
-      hex = hex.replace('#', '')
-      const r = parseInt(hex.substring(0, 2), 16)
-      const g = parseInt(hex.substring(2, 4), 16)
-      const b = parseInt(hex.substring(4, 6), 16)
-      return { r, g, b }
     },
     
     getAlbumColors(albumId) {
@@ -292,6 +334,8 @@ export default {
   color: var(--album-text, #ffffff);
   line-height: 1.4;
   padding: 0px 10px;
+  min-height: 24px;
+  overflow: hidden;
 }
 
 .album_description p {
@@ -302,6 +346,7 @@ export default {
   list-style: none;
   padding: 0px;
   margin: 0px;
+  min-height: 300px;
 }
 
 .songs_list li {
@@ -357,7 +402,6 @@ export default {
   text-align: left;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   margin: 0px auto;
   width: 100%;
   max-width: 900px;

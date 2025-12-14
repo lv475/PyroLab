@@ -27,7 +27,8 @@
         >
           <img 
             :src="photo.image_url" 
-            :alt="photo.description || `Фото ${photo.year}`"
+            :alt="photo.description || `Фото Pyrokinesis ${photo.year}`"
+            loading="lazy"
           />
           <div class="photo-info">
             <span class="year">{{ photo.year }}</span>
@@ -41,7 +42,10 @@
       <div v-if="selectedPhoto" class="lightbox" @click="closeLightbox">
         <div class="lightbox-content">
           <button class="close-btn" @click="closeLightbox">×</button>
-          <img :src="selectedPhoto.image_url" :alt="selectedPhoto.description" />
+          <img 
+          :src="selectedPhoto.image_url" 
+          :alt="selectedPhoto.description || `Фото Pyrokinesis ${selectedPhoto.year}`" 
+          />
           <div class="lightbox-info">
             <h3>{{ selectedPhoto.year }} год</h3>
             <p v-if="selectedPhoto.description">{{ selectedPhoto.description }}</p>

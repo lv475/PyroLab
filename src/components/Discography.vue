@@ -11,7 +11,7 @@
         class="album-card"
         @click="goToAlbum(album.id)"
       >
-        <img :src="album.cover_url" :alt="album.title" class="album-cover">
+        <img :src="album.cover_url"  :alt="album.title" class="album-cover" loading="lazy">
         <div class="album-info">
           <h3>{{ album.title }}</h3>
         </div>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { supabase } from '../lib/supabase'
+import { supabase} from '../lib/supabase'
 
 export default {
   name: 'DiscographyPage',

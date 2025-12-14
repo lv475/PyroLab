@@ -7,7 +7,7 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
     playlist: [],
     isPlaying: false,
     isVisible: false,
-    shouldAutoPlay: true 
+    shouldAutoPlay: true,
   }),
   
   actions: {
@@ -17,6 +17,7 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
       this.currentTrackIndex = index
       this.isVisible = true
       this.shouldAutoPlay = true
+      this.isPlaying = true
     },
     
     togglePlay() {
@@ -38,6 +39,7 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
         this.currentTrack = this.playlist[index]
         this.isPlaying = true
         this.shouldAutoPlay = true
+        this.isClosed = false
       }
     },
     
@@ -62,6 +64,17 @@ export const useAudioPlayerStore = defineStore('audioPlayer', {
       this.isPlaying = false
       this.currentTrack = null
       this.playlist = []
+    },
+
+     closePlayer() {
+      this.currentTrack = null
+    this.playlist = []
+    this.currentTrackIndex = 0
+    this.isPlaying = false
+    },
+    
+    reopenPlayer() {
+      this.isClosed = false
     }
   }
 })
