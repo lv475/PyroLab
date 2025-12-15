@@ -2,7 +2,7 @@
   <main class="main_page">
     <div class="container">
       <div class="main_photo">
-        <img src="../assets/images/main_img.png" alt="главное фото">
+        <img src="../assets/images/main_img.webp" alt="главное фото">
       </div>
       <div class="main_content">
         <h1>Pyrokinesis</h1>
